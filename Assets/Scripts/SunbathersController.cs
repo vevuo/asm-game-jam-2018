@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SunbathersController : MonoBehaviour {
     private const float maxSunBurn = 10f;
-    private const float sunLotionRelief = -1f;
+    private const float sunLotionRelief = -5f;
 
     private bool isInShade = false;
     private float amountOfSunLotion = 0f;
@@ -14,6 +14,8 @@ public class SunbathersController : MonoBehaviour {
 
     private float sunburnTime = 0f;
     private float hydration = 0f;
+    private bool thirsty = false;
+
     public GameObject sunbather;
     public GameObject drinkbubble;
 
@@ -59,23 +61,18 @@ public class SunbathersController : MonoBehaviour {
         }
 
         if (this.isActiveAndEnabled) {
-            if (sunburnTime > 0.0f)
+            if (sunburnTime > 0.0f && hydration > 0.0f)
             {
                 sunburnTime -= Time.deltaTime * 3.0f;
-            }
-            else
-            {
-                sunbather.SetActive(false);
-            }
-
-            if (hydration > 0.0f)
-            {
                 hydration -= Time.deltaTime * 2.25f;
                 if (hydration < 20.0f) {
+                    thirsty = true;
                     orderDrink();
                 }
             }
-            else {
+            else
+            {
+                drinkbubble.SetActive(false);
                 sunbather.SetActive(false);
             }
         }
@@ -87,7 +84,10 @@ public class SunbathersController : MonoBehaviour {
     }
 
     public void addHydration() {
-        hydration += 50.0f;
+        if (thirsty) {
+            hydration += 50.0f;
+            drinkbubble.SetActive(false);
+        }
     }
 
     public void addLotion(float amount) {
