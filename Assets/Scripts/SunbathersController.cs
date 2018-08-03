@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class SunbathersController : MonoBehaviour {
     private float sunburnTime = 0f;
-    private float hydration = 100.0f;
+    private float hydration = 0f;
     public GameObject sunbather;
     public GameObject drinkbubble;
 
     // Use this for initialization
     void Start()
     {
-        sunburnTime = GetRandom();
+        sunburnTime = Random.Range(70.0f, 120.0f);
+        hydration = Random.Range(40.0f, 60.0f);
     }
 
     // Update is called once per frame
@@ -30,8 +31,8 @@ public class SunbathersController : MonoBehaviour {
 
             if (hydration > 0.0f)
             {
-                hydration -= Time.deltaTime;
-                if (hydration < 50.0f) {
+                hydration -= Time.deltaTime * 2.25f;
+                if (hydration < 20.0f) {
                     orderDrink();
                 }
             }
@@ -39,11 +40,6 @@ public class SunbathersController : MonoBehaviour {
                 sunbather.SetActive(false);
             }
         }
-    }
-
-    private float GetRandom()
-    {
-        return Random.Range(20.0f, 40.0f);
     }
 
     private void orderDrink()
