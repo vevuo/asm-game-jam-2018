@@ -46,4 +46,6 @@ public class SunbathersController : MonoBehaviour {
     {
         drinkbubble.SetActive(true);
     }
+
+
 }
