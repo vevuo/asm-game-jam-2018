@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     private int money = 0;
     private bool carryingDrink = false;
+    private string triggeringArea;
     private Rigidbody2D rb2d;
+    private GameObject parent;
     public float maxSpeed = 30.0f;
     public float accel = 10.0f;
 
@@ -29,30 +31,46 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update () {
-
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        GameObject parent = collision.gameObject.transform.parent.gameObject;
-        if (Input.GetKeyDown("space"))
-        {
-            if (collision.gameObject.tag == "BarTrigger")
+        if (triggeringArea != "") {
+            if (Input.GetKey("space"))
             {
-                carryingDrink = true;
-            }
-            else if (collision.gameObject.tag == "SunbatherTrigger")
-            {
-                if (carryingDrink)
+                if (triggeringArea == "BarTrigger")
                 {
-                    parent.GetComponent<SunbathersController>().addHydration();
-                    parent.GetComponent<SunbathersController>().drinkbubble.SetActive(false);
-                    carryingDrink = false;
+                    carryingDrink = true;
                 }
-                else {
-                    parent.GetComponent<SunbathersController>().addLotion(5.0f * Time.deltaTime);
+                else if (triggeringArea == "SunbatherTrigger")
+                {
+                    if (carryingDrink)
+                    {
+                        parent.GetComponent<SunbathersController>().addHydration();
+                        carryingDrink = false;
+                    }
+                    else
+                    {
+                        parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                    }
                 }
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        parent = collision.gameObject.transform.parent.gameObject;
+        if (collision.gameObject.tag == "BarTrigger")
+        {
+            triggeringArea = "BarTrigger";
+        }
+        else if (collision.gameObject.tag == "SunbatherTrigger")
+        {
+            triggeringArea = "SunbatherTrigger";
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        triggeringArea = "";
+    }
+
+
 }
