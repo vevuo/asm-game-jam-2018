@@ -2,14 +2,16 @@ fileFormatVersion: 2
 guid: 9656f83e45a4944b38d608d72cdee094
 TextureImporter:
   fileIDToRecycleName:
-    21300000: body_parts_0
+    21300000: head
     21300002: head
-    21300004: body_parts_2
+    21300004: sleeve
     21300006: torso_skinny
     21300008: torso_big
     21300010: limb
     21300012: swimpants
     21300014: body_parts_7
+    21300016: body
+    21300018: pants
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -103,26 +105,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: body_parts_0
-      rect:
-        serializedVersion: 2
-        x: 155
-        y: 795
-        width: 349.99997
-        height: 90
-      alignment: 9
-      pivot: {x: 0.50000006, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a11c1b37f2084521a785f68c300e707
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: head
       rect:
         serializedVersion: 2
@@ -137,19 +119,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ea32bfdbc6f5d41a1b2aec5b665fc64a
+      spriteID: bf710e1ac67774a66abe8e028f037c92
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: body_parts_2
+      name: body
       rect:
         serializedVersion: 2
-        x: 179
-        y: 643
-        width: 231
-        height: 90
+        x: 901
+        y: 275
+        width: 190
+        height: 410
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,47 +139,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cbdd19b6b13174579a785dddf5cbddb7
+      spriteID: a509b59e14448459b9685c54838b7f96
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: torso_skinny
+      name: sleeve
       rect:
         serializedVersion: 2
-        x: 897.6761
-        y: 275
-        width: 193.32391
-        height: 410
+        x: 1184
+        y: 595
+        width: 151
+        height: 69
       alignment: 9
-      pivot: {x: 0.5085967, y: 0.5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e8d176cdd1c4454eb391728cf88a77e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: torso_big
-      rect:
-        serializedVersion: 2
-        x: 1195
-        y: 275
-        width: 230
-        height: 410
-      alignment: 9
-      pivot: {x: 0.49999997, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d6e2b72d1c24e48e8aade5335d1ec853
+      spriteID: d090c2b7e593747df860585f8abab324
       vertices: []
       indices: 
       edges: []
@@ -206,58 +168,38 @@ TextureImporter:
       name: limb
       rect:
         serializedVersion: 2
-        x: 185
-        y: 515
-        width: 270
-        height: 70
+        x: 1170.5972
+        y: 506.04
+        width: 278.95972
+        height: 62.68112
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.51606005, y: 0.5107333}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 684593e7c12704d17829d129df159f16
+      spriteID: 9f0171594efd343de97f9dc66cf30f66
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swimpants
+      name: pants
       rect:
         serializedVersion: 2
-        x: 875
-        y: 115
-        width: 250
-        height: 68
+        x: 1175
+        y: 303
+        width: 190
+        height: 115
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.5, y: 0.49999997}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 97d499e4e8046428bb70219d3914b68f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: body_parts_7
-      rect:
-        serializedVersion: 2
-        x: 1441
-        y: 406.00003
-        width: 160
-        height: 132.99997
-      alignment: 9
-      pivot: {x: 0.5, y: 0.49999988}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 997870a87107040cc882ab0f90ba2eba
+      spriteID: 4e42b6265b83b44ae8f6f280bfdf9561
       vertices: []
       indices: 
       edges: []
@@ -273,6 +215,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 636688696100000000
+  userData: 636688991860000000
   assetBundleName: 
   assetBundleVariant: 
