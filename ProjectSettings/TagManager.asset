@@ -47,3 +47,6 @@ TagManager:
   - name: Player
     uniqueID: 2584447513
     locked: 0
+  - name: sunbather
+    uniqueID: 160903981
+    locked: 0
