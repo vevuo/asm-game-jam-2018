@@ -7,7 +7,10 @@ public class PlayerController : MonoBehaviour {
     private bool direction = false;
 
     private int money = 0;
+    private bool carryingDrink = false;
+    private string triggeringArea;
     private Rigidbody2D rb2d;
+    private GameObject parent;
     public float maxSpeed = 30.0f;
     public float accel = 10.0f;
 
@@ -43,14 +46,44 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update () {
-        
+        if (triggeringArea != "") {
+            if (Input.GetKey("space"))
+            {
+                if (triggeringArea == "BarTrigger")
+                {
+                    carryingDrink = true;
+                }
+                else if (triggeringArea == "SunbatherTrigger")
+                {
+                    if (carryingDrink)
+                    {
+                        parent.GetComponent<SunbathersController>().addHydration();
+                        carryingDrink = false;
+                    }
+                    else
+                    {
+                        parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                    }
+                }
+            }
+        }
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (coll.gameObject.tag == "SunbatherTrigger")
+        parent = collision.gameObject.transform.parent.gameObject;
+        if (collision.gameObject.tag == "BarTrigger")
         {
-            Debug.Log("it's the trigger!");
+            triggeringArea = "BarTrigger";
         }
+        else if (collision.gameObject.tag == "SunbatherTrigger")
+        {
+            triggeringArea = "SunbatherTrigger";
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        triggeringArea = "";
     }
 }

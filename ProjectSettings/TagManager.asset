@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sunbather
   - SunbatherTrigger
+  - BarTrigger
   layers:
   - Default
   - TransparentFX
