@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     private int money = 0;
+    private bool carryingDrink = false;
     private Rigidbody2D rb2d;
     public float maxSpeed = 30.0f;
     public float accel = 10.0f;
@@ -31,11 +32,27 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (coll.gameObject.tag == "SunbatherTrigger")
+        GameObject parent = collision.gameObject.transform.parent.gameObject;
+        if (Input.GetKeyDown("space"))
         {
-            Debug.Log("it's the trigger!");
+            if (collision.gameObject.tag == "BarTrigger")
+            {
+                carryingDrink = true;
+            }
+            else if (collision.gameObject.tag == "SunbatherTrigger")
+            {
+                if (carryingDrink)
+                {
+                    parent.GetComponent<SunbathersController>().addHydration();
+                    parent.GetComponent<SunbathersController>().drinkbubble.SetActive(false);
+                    carryingDrink = false;
+                }
+                else {
+                    parent.GetComponent<SunbathersController>().addLotion(5.0f * Time.deltaTime);
+                }
+            }
         }
     }
 }

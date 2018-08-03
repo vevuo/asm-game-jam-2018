@@ -17,16 +17,18 @@ public class SunbathersController : MonoBehaviour {
     public GameObject sunbather;
     public GameObject drinkbubble;
 
-    private SpriteRenderer sr;
-    private Color redSkin = new Color(1,0,0);
+    private SpriteRenderer[] sr;
+    //private SpriteRenderer sr;
+    private Color redSkin = new Color(1, 0, 0);
 
-	private void Awake()
-	{
-        sr = GetComponent<SpriteRenderer>();
-	}
+    private void Awake()
+    {
+        //sr = GetComponent<SpriteRenderer>();
+        sr = gameObject.GetComponentsInChildren<SpriteRenderer>();
+    }
 
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
         sunburnTime = Random.Range(70.0f, 120.0f);
         hydration = Random.Range(40.0f, 60.0f);
@@ -35,8 +37,8 @@ public class SunbathersController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if(isInShade){
-            
+        if (isInShade) {
+
         }
         else if (amountOfSunLotion > 0)
         {
@@ -52,7 +54,9 @@ public class SunbathersController : MonoBehaviour {
             }
         }
 
-        sr.color = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
+        for (int i = 0; i < sr.Length; i++) {
+            sr[i].color = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
+        }
 
         if (this.isActiveAndEnabled) {
             if (sunburnTime > 0.0f)
@@ -75,8 +79,6 @@ public class SunbathersController : MonoBehaviour {
                 sunbather.SetActive(false);
             }
         }
-
-
     }
 
     private void orderDrink()
@@ -84,5 +86,11 @@ public class SunbathersController : MonoBehaviour {
         drinkbubble.SetActive(true);
     }
 
+    public void addHydration() {
+        hydration += 50.0f;
+    }
 
+    public void addLotion(float amount) {
+        amountOfSunLotion += amount;
+    }
 }
