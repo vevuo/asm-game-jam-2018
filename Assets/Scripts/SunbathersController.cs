@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SunbathersController : MonoBehaviour {
-    private const float maxSunBurn = 10f;
+    private const float maxSunBurn = 100f;
+    private const float maxSunLotion = 100f;
     private const float sunLotionRelief = -5f;
+    private const float sunburnRateIncrease = 0.1f;
 
     private bool isInShade = false;
     private float amountOfSunLotion = 0f;
@@ -19,14 +21,14 @@ public class SunbathersController : MonoBehaviour {
     public GameObject sunbather;
     public GameObject drinkbubble;
 
-    private SpriteRenderer[] sr;
+    private Anima2D.SpriteMeshInstance[] sr;
     //private SpriteRenderer sr;
     private Color redSkin = new Color(1, 0, 0);
 
     private void Awake()
     {
         //sr = GetComponent<SpriteRenderer>();
-        sr = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        sr = gameObject.GetComponentsInChildren<Anima2D.SpriteMeshInstance>();
     }
 
     // Use this for initialization
@@ -50,6 +52,7 @@ public class SunbathersController : MonoBehaviour {
         else
         {
             sunburn += sunburnRate * Time.deltaTime;
+            sunburnRate += sunburnRateIncrease * Time.deltaTime;
             if (sunburn < 0)
             {
                 sunburn = 0;
@@ -92,7 +95,12 @@ public class SunbathersController : MonoBehaviour {
         return false;
     }
 
-    public void addLotion(float amount) {
+    public bool addLotion(float amount) {
         amountOfSunLotion += amount;
+        if(amountOfSunLotion > maxSunLotion){
+            amountOfSunLotion = maxSunLotion;
+            return false;
+        }
+        return true;
     }
 }
