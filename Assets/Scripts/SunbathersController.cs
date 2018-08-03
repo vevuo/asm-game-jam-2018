@@ -83,11 +83,13 @@ public class SunbathersController : MonoBehaviour {
         drinkbubble.SetActive(true);
     }
 
-    public void addHydration() {
+    public bool addHydration() {
         if (thirsty) {
             hydration += 50.0f;
             drinkbubble.SetActive(false);
+            return true;
         }
+        return false;
     }
 
     public void addLotion(float amount) {
