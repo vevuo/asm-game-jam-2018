@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: sleeve
   m_EditorClassIdentifier: 
   m_ApiVersion: 4
-  m_Sprite: {fileID: 21300004, guid: 9656f83e45a4944b38d608d72cdee094, type: 3}
-  m_SharedMesh: {fileID: 43593350431027754}
+  m_Sprite: {fileID: 21300012, guid: 9656f83e45a4944b38d608d72cdee094, type: 3}
+  m_SharedMesh: {fileID: 43441813701388616}
   pivotPoint: {x: 0, y: 0}
   texVertices: []
   edges: []
@@ -21,7 +21,7 @@ MonoBehaviour:
   indices: 
   bindPoses: []
   m_SharedMaterials: []
---- !u!43 &43593350431027754
+--- !u!43 &43441813701388616
 Mesh:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,17 +45,17 @@ Mesh:
     channels: []
     fullWeights: []
   m_BindPose:
-  - e00: -0.999942
-    e01: 0.010650237
+  - e00: -0.99997765
+    e01: 0.0066799857
     e02: 0
-    e03: 0.41160512
-    e10: -0.010650237
-    e11: -0.999942
+    e03: 0.41885722
+    e10: -0.0066799857
+    e11: -0.99997765
     e12: 0
-    e13: 0.0066514546
+    e13: -0.029527914
     e20: 0
     e21: 0
-    e22: 0.99999976
+    e22: 0.9999998
     e23: 0
     e30: 0
     e31: 0
@@ -192,7 +192,7 @@ Mesh:
   m_MeshMetrics[0]: 1
   m_MeshMetrics[1]: 1
   m_MeshOptimized: 0
---- !u!114 &114430715666945264
+--- !u!114 &114083764178334522
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,25 +277,25 @@ MonoBehaviour:
   m_Indices: 050000000400000003000000000000000300000004000000010000000300000000000000020000000100000000000000
   m_BindPoses:
   - bindPose:
-      e00: -0.999942
-      e01: 0.010650237
+      e00: -0.99997765
+      e01: 0.0066799857
       e02: 0
-      e03: 0.41160512
-      e10: -0.010650237
-      e11: -0.999942
+      e03: 0.41885722
+      e10: -0.0066799857
+      e11: -0.99997765
       e12: 0
-      e13: 0.0066514546
+      e13: -0.029527914
       e20: 0
       e21: 0
-      e22: 0.99999976
-      e23: -0.000000030102512
+      e22: 0.9999998
+      e23: 0
       e30: 0
       e31: 0
       e32: 0
       e33: 1
-    boneLength: 2.2002342
-    path: Back1/Back2/R Shoulder
-    name: R Shoulder
+    boneLength: 2.2002347
+    path: Back1/Back2/L Shoulder
+    name: L Shoulder
     color: {r: 1, g: 0, b: 0, a: 1}
     zOrder: 0
   m_Blendshapes: []
