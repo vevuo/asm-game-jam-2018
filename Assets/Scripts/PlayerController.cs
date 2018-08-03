@@ -14,10 +14,13 @@ public class PlayerController : MonoBehaviour {
     public float maxSpeed = 30.0f;
     public float accel = 10.0f;
 
+    public Transform drink;
+
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        drink.gameObject.SetActive(carryingDrink);
     }
 
     void FixedUpdate() {
@@ -29,12 +32,15 @@ public class PlayerController : MonoBehaviour {
             if (movement.magnitude > 0)
             {
                 if (rb2d.velocity.magnitude <= maxSpeed)
-                    rb2d.AddRelativeForce(movement * accel);
+                    rb2d.AddRelativeForce(movement.normalized * accel);
             }
         }
 
         animator.SetFloat("speed", rb2d.velocity.magnitude);
-        animator.SetBool("direction", rb2d.velocity.x > 0);
+        if (rb2d.velocity.magnitude > 0)
+        {
+            animator.SetBool("direction", moveHorizontal > 0);
+        }
 
         if((direction && rb2d.velocity.x > 0) ||
            (!direction && rb2d.velocity.x < 0)){
@@ -52,13 +58,17 @@ public class PlayerController : MonoBehaviour {
                 if (triggeringArea == "BarTrigger")
                 {
                     carryingDrink = true;
+                    drink.gameObject.SetActive(carryingDrink);
                 }
                 else if (triggeringArea == "SunbatherTrigger")
                 {
                     if (carryingDrink)
                     {
-                        parent.GetComponent<SunbathersController>().addHydration();
-                        carryingDrink = false;
+                        if (parent.GetComponent<SunbathersController>().addHydration())
+                        {
+                            carryingDrink = false;
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
                     }
                     else
                     {
