@@ -9,6 +9,7 @@ public class SunbathersController : MonoBehaviour {
     private const float maxHydration = 100f;
     private const float sunLotionRelief = -0.1f;
     private const float sunburnRateIncrease = 0.05f;
+    private const int maxTip = 100;
     private const int numberOfIdleAnims = 4;
 
     private bool alive = true;
@@ -32,6 +33,8 @@ public class SunbathersController : MonoBehaviour {
     private Color redSkin = new Color(1, 0.4f, 0.4f);
     private Color deadSkin = new Color(0.7f, 0.8f, 1);
     private Color justBeforeDyingSkin = new Color();
+
+    private float tipCounter = 0;
 
     private void Awake()
     {
@@ -85,7 +88,6 @@ public class SunbathersController : MonoBehaviour {
             // Order drink when thirst comes
             if (hydration < maxHydration / 2f && !thirsty)
             {
-                thirsty = true;
                 orderDrink();
             }
 
@@ -108,6 +110,13 @@ public class SunbathersController : MonoBehaviour {
             {
                 sr[i].color = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
             }
+
+            if(thirsty && tipCounter > 0){
+                tipCounter -= 5 * Time.deltaTime;
+                if(tipCounter<0){
+                    tipCounter = 0;
+                }
+            }
         }
         else {
             if (deadness < 1f)
@@ -123,10 +132,16 @@ public class SunbathersController : MonoBehaviour {
 
     private void orderDrink()
     {
+        thirsty = true;
+        tipCounter = maxTip;
         drinkbubble.SetActive(true);
     }
 
-    public bool addHydration() {
+    public bool isThirsty(){
+        return thirsty && alive;
+    }
+
+    public int addHydration() {
         if (thirsty && alive) {
             hydration += maxHydration / 2f;
             if(hydration > maxHydration){
@@ -134,9 +149,9 @@ public class SunbathersController : MonoBehaviour {
             }
             thirsty = false;
             drinkbubble.SetActive(false);
-            return true;
+            return (int)tipCounter;
         }
-        return false;
+        return 0;
     }
 
     public bool addLotion(float amount) {
