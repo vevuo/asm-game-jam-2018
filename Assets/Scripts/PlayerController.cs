@@ -1,6 +1,7 @@
-﻿﻿﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour {
     private Animator animator;
@@ -16,9 +17,11 @@ public class PlayerController : MonoBehaviour {
     private GameObject parent;
     public float maxSpeed = 30.0f;
     public float accel = 10.0f;
+    public SortingGroup lowerBody;
+
+    private GameObject sunchair;
 
     public Transform drink;
-
     // Icons array
     public GameObject[] icons;
 
@@ -154,6 +157,11 @@ public class PlayerController : MonoBehaviour {
 
             }
         }
+
+        if(sunchair){
+            int sortingOrder = sunchair.GetComponent<SortingGroup>().sortingOrder;
+            lowerBody.sortingOrder = sortingOrder - 1;
+        }
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -169,14 +177,23 @@ public class PlayerController : MonoBehaviour {
             triggeringArea = "SunbatherTrigger";
             standingOnATrigger = true;
         }
+        else if (collision.gameObject.tag == "SunchairBacksideTrigger"){
+            sunchair = collision.gameObject.transform.parent.gameObject;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        standingOnATrigger = false;
-        for (int i = 0; i < icons.Length; i++) {
-            icons[i].SetActive(false);
+        if (collision.CompareTag("BarTrigger") || collision.CompareTag("SunbatherTrigger"))
+        {
+            standingOnATrigger = false;
+            triggeringArea = "";
+            for (int i = 0; i < icons.Length; i++) {
+              icons[i].SetActive(false);
+            }
         }
-        triggeringArea = "";
+        else if(collision.CompareTag("SunchairBacksideTrigger")){
+            sunchair = null;
+        }
     }
 }
