@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     private Animator animator;
     private bool direction = false;
+    private bool applyingLotion = false;
+    private bool standingOnATrigger = false;
 
     private int money = 0;
     private bool carryingDrink = false;
@@ -24,36 +26,45 @@ public class PlayerController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-        if (Mathf.Abs(moveHorizontal) > 0 || Mathf.Abs(moveVertical) > 0) {
-            Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-
-            if (movement.magnitude > 0)
-            {
-                if (rb2d.velocity.magnitude <= maxSpeed)
-                    rb2d.AddRelativeForce(movement.normalized * accel);
-            }
-        }
-
-        animator.SetFloat("speed", rb2d.velocity.magnitude);
-        if (rb2d.velocity.magnitude > 0)
+        if (!applyingLotion)
         {
-            animator.SetBool("direction", moveHorizontal > 0);
-        }
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+            if (Mathf.Abs(moveHorizontal) > 0 || Mathf.Abs(moveVertical) > 0)
+            {
+                Vector2 movement = new Vector2(moveHorizontal, moveVertical);
 
-        if((direction && rb2d.velocity.x > 0) ||
-           (!direction && rb2d.velocity.x < 0)){
-            Vector3 v = transform.localScale;
-            v.x *= -1;
-            transform.localScale = v;
-            direction = !direction;
+                if (movement.magnitude > 0)
+                {
+                    if (rb2d.velocity.magnitude <= maxSpeed)
+                        rb2d.AddRelativeForce(movement.normalized * accel);
+                }
+            }
+
+            animator.SetFloat("speed", rb2d.velocity.magnitude);
+
+            if (!standingOnATrigger)
+            {
+                if (rb2d.velocity.magnitude > 0)
+                {
+                    animator.SetBool("direction", moveHorizontal > 0);
+                }
+                if ((direction && rb2d.velocity.x > 0) ||
+                   (!direction && rb2d.velocity.x < 0))
+                {
+                    Vector3 v = transform.localScale;
+                    v.x *= -1;
+                    transform.localScale = v;
+                    direction = !direction;
+                }
+            }
         }
     }
 
     void Update () {
-        if (triggeringArea != "") {
-            if (Input.GetKey("space"))
+        if (standingOnATrigger)
+        {
+            if (Input.GetButton("Fire1"))
             {
                 if (triggeringArea == "BarTrigger")
                 {
@@ -73,27 +84,67 @@ public class PlayerController : MonoBehaviour {
                     else
                     {
                         parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                        if (!applyingLotion)
+                        {
+                            animator.SetBool("applyingLotion", true);
+                            applyingLotion = true;
+                        }
                     }
                 }
+            }
+            else {
+                if (applyingLotion)
+                {
+                    animator.SetBool("applyingLotion", false);
+                    applyingLotion = false;
+                }
+            }
+        }
+        else
+        {
+            if (applyingLotion)
+            {
+                animator.SetBool("applyingLotion", false);
+                applyingLotion = false;
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+	private void LateUpdate()
+	{
+        if (triggeringArea == "SunbatherTrigger")
+        {
+            if((!direction && transform.position.x > parent.transform.position.x) ||
+               (direction && transform.position.x < parent.transform.position.x))
+            {
+                Vector3 v = transform.localScale;
+                v.x *= -1;
+                transform.localScale = v;
+                direction = !direction;
+                animator.SetBool("direction", direction);
+
+            }
+        }
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
     {
         parent = collision.gameObject.transform.parent.gameObject;
         if (collision.gameObject.tag == "BarTrigger")
         {
             triggeringArea = "BarTrigger";
+            standingOnATrigger = true;
         }
         else if (collision.gameObject.tag == "SunbatherTrigger")
         {
             triggeringArea = "SunbatherTrigger";
+            standingOnATrigger = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        standingOnATrigger = false;
         triggeringArea = "";
     }
 }
