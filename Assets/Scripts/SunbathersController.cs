@@ -7,8 +7,8 @@ public class SunbathersController : MonoBehaviour {
     private const float maxSunBurn = 100f;
     private const float maxSunLotion = 100f;
     private const float maxHydration = 100f;
-    private const float sunLotionRelief = -5f;
-    private const float sunburnRateIncrease = 0.1f;
+    private const float sunLotionRelief = -0.1f;
+    private const float sunburnRateIncrease = 0.05f;
     private const int numberOfIdleAnims = 4;
 
     private bool alive = true;
@@ -19,7 +19,7 @@ public class SunbathersController : MonoBehaviour {
     private float sunburn = 0f;
     private float sunburnRate = 0.2f;
 
-    private float dehydrationRate = 0.5f;
+    private float dehydrationRate = 1f;
     private float hydration = 0f;
     private bool thirsty = false;
 
@@ -29,14 +29,12 @@ public class SunbathersController : MonoBehaviour {
     private float holdPoseTime = 0f;
     private Animator animator;
     private Anima2D.SpriteMeshInstance[] sr;
-    //private SpriteRenderer sr;
-    private Color redSkin = new Color(1, 0, 0);
+    private Color redSkin = new Color(1, 0.4f, 0.4f);
     private Color deadSkin = new Color(0.7f, 0.8f, 1);
     private Color justBeforeDyingSkin = new Color();
 
     private void Awake()
     {
-        //sr = GetComponent<SpriteRenderer>();
         sr = gameObject.GetComponentsInChildren<Anima2D.SpriteMeshInstance>();
         animator = GetComponent<Animator>();
     }
@@ -45,7 +43,7 @@ public class SunbathersController : MonoBehaviour {
     void Start()
     {
         alive = true;
-        hydration = Random.Range(maxHydration*0.7f, maxHydration);
+        hydration = Random.Range(maxHydration*0.5f, maxHydration*0.6f);
         animator.SetInteger("idleAnim", (int)(Random.value * numberOfIdleAnims));
         animator.SetBool("alive", true);
         holdPoseTime = Random.Range(5f, 20f);
@@ -134,6 +132,7 @@ public class SunbathersController : MonoBehaviour {
             if(hydration > maxHydration){
                 hydration = maxHydration;
             }
+            thirsty = false;
             drinkbubble.SetActive(false);
             return true;
         }
@@ -157,5 +156,9 @@ public class SunbathersController : MonoBehaviour {
         animator.SetBool("alive", false);
         animator.Play("Sunbather_dead");
         justBeforeDyingSkin = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
+    }
+
+    public bool isAlive(){
+        return alive;
     }
 }
