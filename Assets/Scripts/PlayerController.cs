@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -83,8 +83,9 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (carryingDrink)
                     {
-                        if (parent.GetComponent<SunbathersController>().addHydration())
+                        if (parent.GetComponent<SunbathersController>().isThirsty())
                         {
+                            money += parent.GetComponent<SunbathersController>().addHydration();
                             carryingDrink = false;
                             buttonDownActive = true;
                             icons[1].SetActive(false);
@@ -167,12 +168,12 @@ public class PlayerController : MonoBehaviour {
 	private void OnTriggerEnter2D(Collider2D collision)
     {
         parent = collision.gameObject.transform.parent.gameObject;
-        if (collision.gameObject.tag == "BarTrigger")
+        if (collision.CompareTag("BarTrigger"))
         {
             triggeringArea = "BarTrigger";
             standingOnATrigger = true;
         }
-        else if (collision.gameObject.tag == "SunbatherTrigger")
+        else if (collision.CompareTag("SunbatherTrigger"))
         {
             triggeringArea = "SunbatherTrigger";
             standingOnATrigger = true;
@@ -195,5 +196,9 @@ public class PlayerController : MonoBehaviour {
         else if(collision.CompareTag("SunchairBacksideTrigger")){
             sunchair = null;
         }
+    }
+
+    public int moneyAmount(){
+        return money;
     }
 }
