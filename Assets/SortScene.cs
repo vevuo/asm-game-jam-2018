@@ -15,7 +15,7 @@ public class SortScene : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         foreach(SortingGroup sg in s){
-            sg.sortingOrder = (int)(sg.transform.position.y * -1000f);
+            sg.sortingOrder = (int)(sg.transform.position.y * -50f);
         }
 	}
 }
