@@ -10,6 +10,7 @@ public class SunbathersController : MonoBehaviour {
     private const float sunLotionRelief = -0.1f;
     private const float sunburnRateIncrease = 0.05f;
     private const int maxTip = 100;
+
     private const int numberOfIdleAnims = 4;
 
     private bool alive = true;
@@ -152,6 +153,19 @@ public class SunbathersController : MonoBehaviour {
             return (int)tipCounter;
         }
         return 0;
+    }
+
+    public bool addHydration() {
+        if (thirsty && alive) {
+            hydration += maxHydration / 2f;
+            if(hydration > maxHydration){
+                hydration = maxHydration;
+            }
+            thirsty = false;
+            drinkbubble.SetActive(false);
+            return true;
+        }
+        return false;
     }
 
     public bool addLotion(float amount) {
