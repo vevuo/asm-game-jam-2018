@@ -33,6 +33,8 @@ public class LevelManager : MonoBehaviour {
             if(!sb.GetComponent<SunbathersController>().isAlive()){
                 // Game over
                 UIGameOver.SetActive(true);
+                player.gameObject.GetComponent<Animator>().Play("Idle");
+                player.enabled = false;
             }
         }
 
