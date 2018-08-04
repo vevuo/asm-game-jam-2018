@@ -24,7 +24,11 @@ public class SunbathersController : MonoBehaviour {
     private bool thirsty = false;
 
     public GameObject sunbather;
-    public GameObject drinkbubble;
+
+    public GameObject[] bubbles;
+
+    public GameObject currentBubble = null;
+    public float faceTimer = 3f;
 
     private float holdPoseTime = 0f;
     private Animator animator;
@@ -72,6 +76,39 @@ public class SunbathersController : MonoBehaviour {
                 {
                     sunburn = 0;
                 }
+                amountOfSunLotion -= Time.deltaTime;
+            }
+
+
+            // Bubbles
+            if (amountOfSunLotion < -30f && amountOfSunLotion > -33f)
+            {
+                currentBubble = bubbles[0];
+            }
+            else if (amountOfSunLotion < -33f)
+            {
+                if (currentBubble == bubbles[0]) {
+                    bubbleDeactivator();
+                }
+            }
+
+            if (currentBubble)
+            {
+                if (currentBubble == bubbles[1] || currentBubble == bubbles[2])
+                {
+                    faceTimer -= Time.deltaTime;
+
+                    if (faceTimer <= 0f)
+                    {
+                        bubbleDeactivator();
+                        faceTimer = 3f;
+                    }
+                }
+                currentBubble.SetActive(true);
+            }
+            else
+            {
+                bubbleDeactivator();
             }
 
             // Dehydrate
@@ -86,7 +123,7 @@ public class SunbathersController : MonoBehaviour {
             if (hydration < maxHydration / 2f && !thirsty)
             {
                 thirsty = true;
-                orderDrink();
+                currentBubble = bubbles[3];
             }
 
             // Change idle animation
@@ -121,9 +158,12 @@ public class SunbathersController : MonoBehaviour {
         }
     }
 
-    private void orderDrink()
-    {
-        drinkbubble.SetActive(true);
+    private void bubbleDeactivator() {
+        for (int i = 0; i < bubbles.Length; i++)
+        {
+            bubbles[i].SetActive(false);
+        }
+        currentBubble = null;
     }
 
     public bool addHydration() {
@@ -133,7 +173,7 @@ public class SunbathersController : MonoBehaviour {
                 hydration = maxHydration;
             }
             thirsty = false;
-            drinkbubble.SetActive(false);
+            bubbleDeactivator();
             return true;
         }
         return false;
@@ -150,7 +190,7 @@ public class SunbathersController : MonoBehaviour {
 
     private void die(){
         deadness = 0;
-        drinkbubble.SetActive(false);
+        bubbleDeactivator();
         alive = false;
         animator.SetInteger("idleAnim", -1);
         animator.SetBool("alive", false);

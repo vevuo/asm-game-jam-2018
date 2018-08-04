@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     private int money = 0;
     private bool carryingDrink = false;
     private bool buttonDownActive = false;
+    private bool drinkButtonActive = false;
     private string triggeringArea;
     private Rigidbody2D rb2d;
     private GameObject parent;
@@ -75,20 +76,43 @@ public class PlayerController : MonoBehaviour {
             {
                 if (triggeringArea == "BarTrigger")
                 {
-                    carryingDrink = true;
-                    icons[0].SetActive(false);
-                    drink.gameObject.SetActive(carryingDrink);
+                    if (!(buttonDownActive))
+                    {
+                        if (carryingDrink)
+                        {
+                            carryingDrink = false;
+                            icons[0].SetActive(true);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        else
+                        {
+                            carryingDrink = true;
+                            icons[0].SetActive(false);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        buttonDownActive = true;
+                    }
                 }
                 else if (triggeringArea == "SunbatherTrigger")
                 {
                     if (carryingDrink)
                     {
-                        if (parent.GetComponent<SunbathersController>().addHydration())
+                        if (!(buttonDownActive))
                         {
-                            carryingDrink = false;
-                            buttonDownActive = true;
-                            icons[1].SetActive(false);
-                            drink.gameObject.SetActive(carryingDrink);
+                            if (parent.GetComponent<SunbathersController>().addHydration())
+                            {
+                                carryingDrink = false;
+                                buttonDownActive = true;
+                                icons[1].SetActive(false);
+                                drink.gameObject.SetActive(carryingDrink);
+                                parent.GetComponent<SunbathersController>().faceTimer = 3f;
+                                parent.GetComponent<SunbathersController>().currentBubble = parent.GetComponent<SunbathersController>().bubbles[2];
+                            }
+                            else
+                            {
+                                parent.GetComponent<SunbathersController>().faceTimer = 3f;
+                                parent.GetComponent<SunbathersController>().currentBubble = parent.GetComponent<SunbathersController>().bubbles[1];
+                            }
                         }
                     }
                     else
@@ -130,6 +154,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
                 buttonDownActive = false;
+                //drinkButtonActive = false;
             }
         }
         else

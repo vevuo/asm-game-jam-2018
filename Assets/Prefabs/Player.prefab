@@ -1808,6 +1808,7 @@ MonoBehaviour:
   accel: 200
   lowerBody: {fileID: 210885407936120434}
   drink: {fileID: 4667659966793394}
+  icons: []
 --- !u!114 &114762971340014298
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -764,7 +764,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sunbather: {fileID: 1263457441899314}
-  drinkbubble: {fileID: 1284899508878502}
+  bubbles: []
+  currentBubble: {fileID: 0}
+  faceTimer: 3
 --- !u!114 &114065175334771762
 MonoBehaviour:
   m_ObjectHideFlags: 1
