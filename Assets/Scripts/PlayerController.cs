@@ -1,4 +1,4 @@
-﻿﻿﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 
     private int money = 0;
     private bool carryingDrink = false;
+    private bool buttonDownActive = false;
     private string triggeringArea;
     private Rigidbody2D rb2d;
     private GameObject parent;
@@ -21,9 +22,11 @@ public class PlayerController : MonoBehaviour {
     private GameObject sunchair;
 
     public Transform drink;
+    // Icons array
+    public GameObject[] icons;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         drink.gameObject.SetActive(carryingDrink);
@@ -73,6 +76,7 @@ public class PlayerController : MonoBehaviour {
                 if (triggeringArea == "BarTrigger")
                 {
                     carryingDrink = true;
+                    icons[0].SetActive(false);
                     drink.gameObject.SetActive(carryingDrink);
                 }
                 else if (triggeringArea == "SunbatherTrigger")
@@ -82,16 +86,21 @@ public class PlayerController : MonoBehaviour {
                         if (parent.GetComponent<SunbathersController>().addHydration())
                         {
                             carryingDrink = false;
+                            buttonDownActive = true;
+                            icons[1].SetActive(false);
                             drink.gameObject.SetActive(carryingDrink);
                         }
                     }
                     else
                     {
-                        parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
-                        if (!applyingLotion)
-                        {
-                            animator.SetBool("applyingLotion", true);
-                            applyingLotion = true;
+                        if (!(buttonDownActive)) {
+                            parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                            if (!applyingLotion)
+                            {
+                                animator.SetBool("applyingLotion", true);
+                                icons[2].SetActive(false);
+                                applyingLotion = true;
+                            }
                         }
                     }
                 }
@@ -102,6 +111,25 @@ public class PlayerController : MonoBehaviour {
                     animator.SetBool("applyingLotion", false);
                     applyingLotion = false;
                 }
+
+                if (triggeringArea == "BarTrigger")
+                {
+                    if (!(carryingDrink))
+                    {
+                        icons[0].SetActive(true);
+                    }
+                }
+                else if (triggeringArea == "SunbatherTrigger") {
+                    if (!(carryingDrink) && !(buttonDownActive))
+                    {
+                        icons[2].SetActive(true);
+                    }
+                    else
+                    {
+                        icons[1].SetActive(true);
+                    }
+                }
+                buttonDownActive = false;
             }
         }
         else
@@ -160,10 +188,12 @@ public class PlayerController : MonoBehaviour {
         {
             standingOnATrigger = false;
             triggeringArea = "";
+            for (int i = 0; i < icons.Length; i++) {
+              icons[i].SetActive(false);
+            }
         }
         else if(collision.CompareTag("SunchairBacksideTrigger")){
             sunchair = null;
         }
-
     }
 }
