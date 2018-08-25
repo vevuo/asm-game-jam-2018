@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
     private GameObject[] sunbathers;
@@ -9,6 +10,10 @@ public class LevelManager : MonoBehaviour {
     public int levelUpTimeSeconds = 30;
     public GameObject UIGameOver;
     public PlayerController player;
+    public GameObject pressSpace;
+
+    private float counter = 0;
+    private bool gameover = false;
 
 
 	// Use this for initialization
@@ -22,35 +27,51 @@ public class LevelManager : MonoBehaviour {
         currentLevel = 0;
 
         UIGameOver.SetActive(false);
+        pressSpace.SetActive(false);
 	}
 
     // Update is called once per frame
     void Update()
     {
-
-        foreach (GameObject sb in sunbathers)
-        {
-            if(!sb.GetComponent<SunbathersController>().isAlive()){
-                // Game over
-                UIGameOver.SetActive(true);
-                player.gameObject.GetComponent<Animator>().Play("Idle");
-                player.enabled = false;
+        if(gameover){
+            counter += Time.deltaTime;
+            if(counter > 3f){
+                pressSpace.SetActive(true);
+                if(Input.GetButtonDown("Fire1")){
+                    SceneManager.LoadScene("Title");
+                }
             }
         }
-
-        levelUpTime += Time.deltaTime;
-        if (levelUpTime > levelUpTimeSeconds)
-        {
-            levelUpTime = 0;
-            if (sunbathers.Length > currentLevel)
+        else {
+            foreach (GameObject sb in sunbathers)
             {
-                currentLevel++;
-                GameObject tmp;
-                do
+                if (!sb.GetComponent<SunbathersController>().IsAlive())
                 {
-                    tmp = sunbathers[(int)(Random.value * sunbathers.Length)];
-                } while (tmp.activeInHierarchy);
-                tmp.SetActive(true);
+                    // Game over
+                    UIGameOver.SetActive(true);
+                    player.gameObject.GetComponent<Animator>().Play("Idle");
+                    player.enabled = false;
+                    counter = 0;
+                    gameover = true;
+                    pressSpace.SetActive(false);
+                }
+            }
+
+            if (currentLevel < sunbathers.Length - 1)
+            {
+                levelUpTime += Time.deltaTime;
+                if (levelUpTime > levelUpTimeSeconds)
+                {
+                    levelUpTime = 0;
+
+                    currentLevel++;
+                    GameObject tmp;
+                    do
+                    {
+                        tmp = sunbathers[Mathf.FloorToInt(Random.value * sunbathers.Length)];
+                    } while (tmp.activeInHierarchy);
+                    tmp.SetActive(true);
+                }
             }
         }
     }

@@ -75,30 +75,48 @@ public class PlayerController : MonoBehaviour {
             {
                 if (triggeringArea == "BarTrigger")
                 {
-                    carryingDrink = true;
-                    icons[0].SetActive(false);
-                    drink.gameObject.SetActive(carryingDrink);
+                    if (!(buttonDownActive))
+                    {
+                        if (carryingDrink)
+                        {
+                            carryingDrink = false;
+                            icons[0].SetActive(true);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        else
+                        {
+                            carryingDrink = true;
+                            icons[0].SetActive(false);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        buttonDownActive = true;
+                    }
                 }
                 else if (triggeringArea == "SunbatherTrigger")
                 {
                     if (carryingDrink)
                     {
-                        if (parent.GetComponent<SunbathersController>().isThirsty())
+                        if (!(buttonDownActive))
                         {
-                            money += parent.GetComponent<SunbathersController>().addHydration();
-                            carryingDrink = false;
-                            buttonDownActive = true;
-                            icons[1].SetActive(false);
-                            drink.gameObject.SetActive(carryingDrink);
+                            if (parent.GetComponent<SunbathersController>().OfferDrink())
+                            {
+                                money += parent.GetComponent<SunbathersController>().AddHydration();
+                                carryingDrink = false;
+                                buttonDownActive = true;
+                                icons[1].SetActive(false);
+                                drink.gameObject.SetActive(carryingDrink);
+                            }
                         }
                     }
                     else
                     {
-                        if (!(buttonDownActive)) {
-                            parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                        if (!(buttonDownActive))
+                        {
+                            parent.GetComponent<SunbathersController>().AddLotion(10.0f * Time.deltaTime);
                             if (!applyingLotion)
                             {
                                 animator.SetBool("applyingLotion", true);
+                                icons[1].SetActive(false);
                                 icons[2].SetActive(false);
                                 applyingLotion = true;
                             }
@@ -115,19 +133,21 @@ public class PlayerController : MonoBehaviour {
 
                 if (triggeringArea == "BarTrigger")
                 {
-                    if (!(carryingDrink))
+                    if (!carryingDrink)
                     {
                         icons[0].SetActive(true);
                     }
                 }
                 else if (triggeringArea == "SunbatherTrigger") {
-                    if (!(carryingDrink) && !(buttonDownActive))
+                    if (!carryingDrink)
                     {
+                        icons[1].SetActive(false);
                         icons[2].SetActive(true);
                     }
                     else
                     {
                         icons[1].SetActive(true);
+                        icons[2].SetActive(false);
                     }
                 }
                 buttonDownActive = false;
@@ -198,7 +218,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public int moneyAmount(){
+    public int MoneyAmount(){
         return money;
     }
 }
